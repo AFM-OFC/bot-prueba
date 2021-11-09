@@ -1,0 +1,12 @@
+{
+  "name": "DeepBot",
+  "version": "0.0.1",
+  "description": "DeepBot prueba",
+  "main": "deep.js",
+  "scripts": {
+  "start": "node deep.js"
+  },
+  "dependencies": {
+    "@adiwajshing/baileys": "^3.4.1"
+  }
+}
