@@ -4,7 +4,7 @@ const fs = require('fs');
 async function iniciar () { 
         const deusafm = new WAConnection()
 
-        deep.logger.level = 'warn'
+        deusafm.logger.level = 'warn'
 
         deusafm.on('qr', () => {
         })
