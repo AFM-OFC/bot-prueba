@@ -11,7 +11,7 @@ const {
   info,
   success,
   close,
-} = require("./lib/functions");
+} = require("./deep/baner");
 const prefix = '/'
 
 async function iniciar () { 
