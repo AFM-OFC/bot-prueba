@@ -1,24 +1,6 @@
-const { 
-  WAConnection,
-  MessageType,
-  Presence, 
-  MessageOptions,
-  Mimetype,
-  WALocationMessage,
-  WA_MESSAGE_STUB_TYPES,
-  ReconnectMode,
-  ProxyAgent,
-  GroupSettingChange,
-  ChatModification,
-  waChatKey,
-  WA_DEFAULT_EPHEMERAL,
-  mentionedJid,
-  prepareMessageFromContent, 
-  Browsers,
-  processTime
-} = require("@adiwajshing/baileys")
-const fs = require('fs')
-const { wait, h2k, generateMessageID, getGroupAdmins, banner, start, info, success, close } = require('./lib/functions')
+const { WAConnection, MessageType } = require('@adiwajshing/baileys');
+const fs = require('fs');
+const { wait, h2k, generateMessageID, getGroupAdmins, banner, start, info, success, close } = require('./lib/functions.js')
 const { addBanned, unBanned, BannedExpired, cekBannedUser } = require('./lib/banned.js')
 const prefix = '/'
 
@@ -99,15 +81,17 @@ const botNumber = client.user.jid.split("@")[0]
 const ownerNumber = ['34640810893@s.whatsapp.net']
 const isGroup = from.endsWith('@g.us')
 const isBan = cekBannedUser(sender, ban)
-const deus = senderNumber == botNumber
-const sender = deep.key.fromMe ? client.user.jid : isGroup ? deep.participant : deep.key.remoteJid
+const reply = (teks) => {
+client.sendMessage(from, teks, text, {quoted:deep})
+			}
 const senderNumber = sender.split("@")[0]
 const isMe = senderNumber == botNumber
+deepbot = (type === 'buttonsResponseMessage') ? deep.message.buttonsResponseMessage.selectedDisplayText : '' 
 const conts = deep.key.fromMe ? client.user.jid : client.contacts[sender] || { notify: jid.replace(/@.+/, '') }
 const pushname = deep.key.fromMe ? client.user.name : conts.notify || conts.vname || conts.name || '-'
 
 mess = {
-			wait: '⌛ 𝐄𝐍 𝐏𝐑𝐎𝐂𝐄𝐒𝐎 ⌛',
+			wait: '⌛ ESPERE ⌛',
 			success: '✔️ 𝙎𝙐𝙎𝙎𝙀𝙎 ✔️',
 			ferr: 'Intentalo de nuevo mas tarde',
 			error: {
@@ -116,7 +100,7 @@ mess = {
 			},
 			only: {
     			group: '[❗] ¡Este comando solo se puede usar en grupos! ❌',
-    			benned: '⚠ USTED ES UN USUARIO BANEADO, ESO QUIERE DECIR QUE NO PUEDE USAR EL BOT ⚠',
+    			benned: '⚠ USTED ES UN USUARIO BANEADO ⚠',
     			ownerG: '[❗] ¡Este comando solo puede ser utilizado por el creador del grupo! ❌',
     			ownerB: '[❗] ¡Este comando solo puede ser utilizado por el creador del bot! ❌',
     			admin: '[❗] ¡Este comando solo puede ser utilizado por administradores del grupo! ❌',
@@ -124,12 +108,17 @@ mess = {
   			}
 			}
 switch (command) {
-                
 case 'menu':
 case 'help':
-dee = fs.readFileSync(`./deep/deep1.jpg`)                
 reply('ESPERE EL MENU') 
-menu = `╭═✦͜͡ৡৢ┅╡༊DeepBot࿑╞┅ৡৢ͜͡✦═╮*
+dee = fs.readFileSync(`./deep/deep1.jpg`);      
+sadtexto = `DeepBot`
+deepb = await client.prepareMessage(from, dee, image, {quoted : deep})
+gbutsan = [
+  {buttonId: 'id4', buttonText: {displayText: '☰ CREADOR'}, type: 1}]
+ gbuttonan = {
+imageMessage: deep.message.imageMessage,thumbnail: fs.readFileSync("deep/deep1.jpg"),
+    contentText: `╭═✦͜͡ৡৢ┅╡༊DeepBot࿑╞┅ৡৢ͜͡✦═╮*
 ║┊: * ⃟ ⃟  ━ೋ๑——๑ೋ━ ⃟ ⃟ *      
 ║◄🔥┢┅ீ͜ৡৢ͜͡✦━◇━ீ͜ৡৢ͜͡✦┅┧🔥►
 ║┊:      ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈  
@@ -144,12 +133,19 @@ menu = `╭═✦͜͡ৡৢ┅╡༊DeepBot࿑╞┅ৡৢ͜͡✦═╮*
 ⊱✦•COMANDOS
 ▋╭┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅   
 ▋──⊱${prefix}bot
-■█🔥█■▰▱▰▱▰▱■█🔥█■`
-client.sendMessage(from, dee, image, {quoted: deep, caption:menu})
-break        
+▋──⊱${prefix}dj
+■█🔥█■▰▱▰▱▰▱■█🔥█■`,
+    footerText: `HOLA ${pushname}\nESPERO QUE TE ESTE GUSTANDO EL BOT`,
+    buttons: gbutsan,
+    headerType: 4
+}
+await client.sendMessage(from, gbuttonan, MessageType.buttonsMessage)
+break
+                
+
 
 case 'ban':
-if (!deus) return reply(mess.only.ownerB)
+if (!isMe) return reply(mess.only.ownerB)
 mentioned = deep.message.extendedTextMessage.contextInfo.mentionedJid
 if (mentioned.length !== 0){
 for (let i = 0; i < mentioned.length; i++){
@@ -167,7 +163,7 @@ mentions(`@${mentioned[0].split('@')[0]} Usted a sido baneado, lo que significa 
 break
                 
 case 'unban':
-if (!deus) return reply(mess.only.owner)
+if (!isMe) return reply(mess.only.owner)
 mentioned = deep.message.extendedTextMessage.contextInfo.mentionedJid
 if (mentioned.length !== 0){
 for (let i = 0; i < mentioned.length; i++){
@@ -198,7 +194,23 @@ const audio = fs.readFileSync('./deep/deep2.mp3')
 client.sendMessage(from, audio, MessageType.audio, ptt: true, {quoted: deep})
 break                
 }
+	
+	default:
+	
 
+if (deepbot == '☰ CREADOR') {
+const buttons2 = [
+]
+
+const buttonMessage2 = {
+    contentText: "MI CRRADOR : wa.me/+34640810893",
+    footerText: 'DeepBot',
+    buttons: buttons2,
+    headerType: 1
+}
+
+const sendMsgg = await client.sendMessage(from, buttonMessage2, MessageType.buttonsMessage)
+}
 } catch (e) {
         
 console.log(e)}
