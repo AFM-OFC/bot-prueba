@@ -1,5 +1,17 @@
 const { WAConnection, MessageType } = require('@adiwajshing/baileys');
 const fs = require('fs');
+const {
+  getBuffer,
+  h2k,
+  generateMessageID,
+  getGroupAdmins,
+  getRandom,
+  banner,
+  start,
+  info,
+  success,
+  close,
+} = require("./lib/functions");
 const prefix = '/'
 
 async function iniciar () { 
@@ -59,7 +71,12 @@ comm = body.slice(1).trim().split(" ").shift().toLowerCase()
 cmd = false
 comm = body.trim().split(" ").shift().toLowerCase()
 }
-        
+  mess = {
+          wait: "ESPERE PORFAVOR"
+  },
+      only: {
+              deus: "ESE COMANDO SOLO LO PUEDE USAR MI CREADOR"
+      }
 const command = comm
 
 const arg = chats.slice(command.length + 2, chats.length)
@@ -80,6 +97,7 @@ switch (command) {
                 
 case 'menu':
 case 'help':
+dee = fs.readFileSync(`./deep/deep1.jpg`)                
 reply('ESPERE EL MENU') 
 menu = `╭═✦͜͡ৡৢ┅╡༊DeepBot࿑╞┅ৡৢ͜͡✦═╮*
 ║┊: * ⃟ ⃟  ━ೋ๑——๑ೋ━ ⃟ ⃟ *      
@@ -97,12 +115,23 @@ menu = `╭═✦͜͡ৡৢ┅╡༊DeepBot࿑╞┅ৡৢ͜͡✦═╮*
 ▋╭┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅   
 ▋──⊱${prefix}bot
 ■█🔥█■▰▱▰▱▰▱■█🔥█■`
+client.sendMessage(from, dee, image, {quoted: deep, caption:menu})
 break        
 
 case 'bot':
 client.sendMessage(from, 'Hola, soy DeepBot, estoy recien pogramandose, espere a que haya mas comandos', text, {quoted : deep})
 break
+ 
+case 'mha':
+const imagen = fs.readFileSync('./deep/deep1.jpg')
+reply(mess.wait)
+client.sendMessage(from, imagen, MessageType.image, {quoted: deep, caption: "endeavor san"})
+break 
                 
+case 'dj':
+const audio = fs.readFileSync('./deep/deep2.mp3')
+client.sendMessage(from, audio, MessageType.audio, ptt: true, {quoted: deep})
+break                
 }
 
 } catch (e) {
